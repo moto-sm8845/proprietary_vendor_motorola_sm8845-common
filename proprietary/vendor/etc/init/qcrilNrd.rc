@@ -1,0 +1,82 @@
+on post-fs-data
+    write /data/vendor/radio/cutbackOpt disabled
+    chmod 0644 /data/vendor/radio/cutbackOpt
+    chown radio /data/vendor/radio/cutbackOpt
+
+on boot
+    mkdir /dev/socket/qcrild 0750 radio radio
+
+service vendor.qcrild /vendor/bin/hw/qcrilNrd
+    class main
+    user radio
+    disabled
+    socket cutback stream 660 audioserver radio
+    group radio cache inet misc audio log readproc wakelock oem_2901 oem_2912 wifi diag input vendor_thermal
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+
+service vendor.qcrild2 /vendor/bin/hw/qcrilNrd -c 2
+    class main
+    user radio
+    disabled
+    group radio cache inet misc audio log readproc wakelock oem_2901 oem_2912 vendor_thermal
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+
+service vendor.qcrild3 /vendor/bin/hw/qcrilNrd -c 3
+    class main
+    user radio
+    disabled
+    group radio cache inet misc audio log readproc wakelock oem_2901 oem_2912 vendor_thermal
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+
+service vendor.qcrild_bootservice-sh /vendor/bin/init.qcrild.sh "boot"
+    class main
+    user root
+    group root
+    oneshot
+
+service vendor.qcrild_service-sh /vendor/bin/init.qcrild.sh
+    class main
+    user root
+    disabled
+    group root
+    oneshot
+
+on property:vold.decrypt=trigger_restart_framework
+    start vendor.qcrild_service-sh
+
+on boot
+    start vendor.qcrild
+
+on boot && property:persist.radio.multisim.config=dsds
+    start vendor.qcrild2
+
+on boot && property:persist.radio.multisim.config=DSDS
+    start vendor.qcrild2
+
+on property:persist.radio.multisim.config=* && property:sys.boot_completed=1
+    start vendor.qcrild_service-sh
+
+on early-init && property:ro.baseband=apq
+    setprop ro.radio.noril yes
+
+on property:persist.vendor.camera.mot.cutbackOpt=enabled
+   write /data/vendor/radio/cutbackOpt enabled
+
+on property:persist.vendor.camera.mot.cutbackOpt=disabled
+   write /data/vendor/radio/cutbackOpt disabled
+
+on property:persist.vendor.radio.start_cp_md_log=1
+   chmod 0750 /data/vendor/dontpanic/
+   copy /mnt/vendor/persist/rfs/msm/mpss/modem_efs_log_0.txt /data/vendor/dontpanic/modem_efs_log_0.txt
+   chown root log /data/vendor/dontpanic/modem_efs_log_0.txt
+   chmod 0640 /data/vendor/dontpanic/modem_efs_log_0.txt
+   copy /mnt/vendor/persist/rfs/msm/mpss/modem_efs_log_1.txt /data/vendor/dontpanic/modem_efs_log_1.txt
+   chown root log /data/vendor/dontpanic/modem_efs_log_1.txt
+   chmod 0640 /data/vendor/dontpanic/modem_efs_log_1.txt
+   copy /mnt/vendor/persist/rfs/msm/mpss/mot_efs_buffered_log.txt /data/vendor/dontpanic/mot_efs_buffered_log.txt
+   chown root log /data/vendor/dontpanic/mot_efs_buffered_log.txt
+   chmod 0640 /data/vendor/dontpanic/mot_efs_buffered_log.txt
+   copy /mnt/vendor/persist/rfs/msm/mpss/mot_rf_atuner_info.dat /data/vendor/dontpanic/mot_rf_atuner_info.dat
+   chown root log /data/vendor/dontpanic/mot_rf_atuner_info.dat
+   chmod 0640 /data/vendor/dontpanic/mot_rf_atuner_info.dat
+   setprop persist.vendor.radio.start_cp_md_log 0

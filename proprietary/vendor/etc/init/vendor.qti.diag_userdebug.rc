@@ -1,0 +1,110 @@
+#
+# Copyright (c) 2022 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+#
+
+on early-init
+    chown system system /sys/devices/soc0/select_image
+    chown system system /sys/devices/soc0/image_version
+    chown system system /sys/devices/soc0/image_variant
+    chown system system /sys/devices/soc0/image_crm_version
+
+# moto rework for user version diag log
+# port from ueventd.qcom.userdebug.rc and init.qti.kernel.debug-alor.sh
+# from SM8850 coresight-tmc-etr change to tmc_etr0
+on boot
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etr/enable_sink
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr/enable_sink
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etr/out_mode
+    chmod 660 /sys/devices/platform/soc/10048000.tmc/coresight-tmc-etr/out_mode
+    chown root oem_2902 /sys/devices/platform/soc/10048000.tmc/coresight-tmc-etr/block_size
+    chmod 660 /sys/devices/platform/soc/10048000.tmc/coresight-tmc-etr/block_size
+    chown root oem_2902 /sys/devices/platform/soc/10048000.tmc/coresight-tmc-etr/buffer_size
+    chmod 660 /sys/devices/platform/soc/10048000.tmc/coresight-tmc-etr/buffer_size
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etr1/enable_sink
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr1/enable_sink
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etr1/out_mode
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr1/out_mode
+    chown root oem_2902 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr1/block_size
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr1/block_size
+    chown root oem_2902 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr1/buffer_size
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/coresight-tmc-etr1/buffer_size
+    chown root oem_2902 /sys/bus/coresight/reset_source_sink
+    chmod 660 /sys/bus/coresight/reset_source_sink
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr/block_size
+    chown log vendor_qdss /sys/bus/coresight/devices/coresight-tmc-etr/block_size
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr1/block_size
+    chown log vendor_qdss /sys/bus/coresight/devices/coresight-tmc-etr1/block_size
+    chown system system /sys/bus/coresight/devices/coresight-modem-diag/enable_source
+    chown system system /sys/bus/coresight/devices/tmc_etr0/enable_sink
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/tmc_etr0/enable_sink
+    chown system system /sys/bus/coresight/devices/tmc_etr0/out_mode
+    chmod 660 /sys/devices/platform/soc/10048000.tmc/tmc_etr0/out_mode
+    chown root oem_2902 /sys/devices/platform/soc/10048000.tmc/tmc_etr0/block_size
+    chmod 660 /sys/devices/platform/soc/10048000.tmc/tmc_etr0/block_size
+    chown root oem_2902 /sys/devices/platform/soc/10048000.tmc/tmc_etr0/buffer_size
+    chmod 660 /sys/devices/platform/soc/10048000.tmc/tmc_etr0/buffer_size
+    chown system system /sys/bus/coresight/devices/tmc_etr1/enable_sink
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/tmc_etr1/enable_sink
+    chown system system /sys/bus/coresight/devices/tmc_etr1/out_mode
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/tmc_etr1/out_mode
+    chown root oem_2902 /sys/devices/platform/soc/1004f000.tmc/tmc_etr1/block_size
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/tmc_etr1/block_size
+    chown root oem_2902 /sys/devices/platform/soc/1004f000.tmc/tmc_etr1/buffer_size
+    chmod 660 /sys/devices/platform/soc/1004f000.tmc/tmc_etr1/buffer_size
+    chown root oem_2902 /sys/bus/coresight/reset_source_sink
+    chown log vendor_qdss /sys/bus/coresight/devices/tmc_etr0/block_size
+    chmod 660 /sys/bus/coresight/devices/tmc_etr1/block_size
+    chown log vendor_qdss /sys/bus/coresight/devices/tmc_etr1/block_size
+    chown system system /sys/bus/coresight/devices/modem_diag/enable_source
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etf/curr_sink
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etf/enable_sink
+    chown system system /sys/bus/coresight/devices/coresight-tmc-etr/curr_sink
+    chown system system /sys/bus/coresight/devices/coresight-stm/enable
+    chown system system /sys/bus/coresight/devices/coresight-stm/enable_source
+    chown system system /sys/bus/coresight/devices/coresight-stm/hwevent_enable
+    chown system system /sys/bus/coresight/devices/coresight-swao-csr/timestamp
+    chown system system /sys/bus/coresight/devices/tmc_etf0/curr_sink
+    chown system system /sys/bus/coresight/devices/tmc_etf0/enable_sink
+    chown system system /sys/bus/coresight/devices/tmc_etr0/curr_sink
+    chown system system /sys/bus/coresight/devices/stm0/enable
+    chown system system /sys/bus/coresight/devices/stm0/enable_source
+    chown system system /sys/bus/coresight/devices/stm0/hwevent_enable
+    chown system system /sys/bus/coresight/devices/swao_csr/timestamp
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etf/curr_sink
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etf/enable_sink
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr/curr_sink
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr/enable_sink
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr/out_mode
+    chmod 660 /sys/bus/coresight/devices/coresight-stm/enable
+    chmod 660 /sys/bus/coresight/devices/coresight-stm/enable_source
+    chmod 660 /sys/bus/coresight/devices/coresight-stm/hwevent_enable
+    chmod 660 /sys/bus/coresight/devices/coresight-swao-csr/timestamp
+    chmod 660 /sys/bus/coresight/devices/coresight-modem-diag/enable_source
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr1/enable_sink
+    chmod 660 /sys/bus/coresight/devices/coresight-tmc-etr1/out_mode
+    chmod 660 /sys/bus/coresight/devices/tmc_etf0/curr_sink
+    chmod 660 /sys/bus/coresight/devices/tmc_etf0/enable_sink
+    chmod 660 /sys/bus/coresight/devices/tmc_etr0/curr_sink
+    chmod 660 /sys/bus/coresight/devices/tmc_etr0/enable_sink
+    chmod 660 /sys/bus/coresight/devices/tmc_etr0/out_mode
+    chmod 660 /sys/bus/coresight/devices/stm0/enable
+    chmod 660 /sys/bus/coresight/devices/stm0/enable_source
+    chmod 660 /sys/bus/coresight/devices/stm0/hwevent_enable
+    chmod 660 /sys/bus/coresight/devices/swao_csr/timestamp
+    chmod 660 /sys/bus/coresight/devices/modem_diag/enable_source
+    chmod 660 /sys/bus/coresight/devices/tmc_etr1/enable_sink
+    chmod 660 /sys/bus/coresight/devices/tmc_etr1/out_mode
+
+
+on early-boot
+    start vendor.diag-router
+
+service vendor.diag-router /vendor/bin/diag-router
+    class hal
+    user system
+    group system
+    capabilities KILL
+    disabled
+

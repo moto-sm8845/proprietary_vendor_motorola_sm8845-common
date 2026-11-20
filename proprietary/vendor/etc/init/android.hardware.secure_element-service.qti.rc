@@ -1,0 +1,21 @@
+service vendor.secure_element /vendor/bin/hw/android.hardware.secure_element-service.qti
+    class early_hal
+    user system
+    group nfc system
+    disabled
+
+# moto
+on post-fs && property:ro.vendor.hw.nfc=ese_st
+    start vendor.secure_element
+on post-fs && property:ro.vendor.hw.nfc=ese_nq
+    start vendor.secure_element
+
+# moto
+on post-fs && property:ro.bootmode=mot-factory
+    chown root system /proc/config/ese_cplc/ascii
+    chown root system /proc/config/bl_notify.erase/ascii
+    chown root system /proc/config/bl_notify.ese/ascii
+
+# moto
+on property:ro.product.is_production=false && property:persist.vendor.ese.mute=*
+    start vendor.tzlogd-dump
